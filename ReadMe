@@ -1,0 +1,13 @@
+CDUMonitorDB Data retrive (terminal)
+
+1. Windows: OpenSSH Client, OpenSSH Server
+  
+2. Install sqlite3 on both monitor system and remote system
+3. check sqlite version, make sure sqlite already installed
+4. Sqlite statement: 
+"""
+SELECT *, DATETIME('now') AS CurrentTime
+FROM Record
+ORDER BY DateTime1 DESC
+LIMIT 10;
+"""
