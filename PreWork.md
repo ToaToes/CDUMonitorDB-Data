@@ -17,3 +17,5 @@ write down the 10.xxx ip address on sheet
 ```net user Administrator admin``` set password as admin
 
 Test SSH connection on monitor system to the remote system, mark the sheets
+``` ssh Administrator@[ip address]```
+type in password
