@@ -28,3 +28,8 @@ and type in password
 ```
 sqlite3 CDUMonitorDB.db "Select T1, T2, P4, P5, DateTime1 from Record ORDER BY DateTime1 DESC LIMIT 1;"
 ```
+
+```
+Select T1, T2, (T1-T2) As TempDifference, P4, P5, (P5-p4) As BarDifference, DateTime1 from Record ORDER BY DateTime1 DESC LIMIT 1;
+```
+To get data directly for Temperature Difference for T1 and T2, Bar difference for P4 and P5
