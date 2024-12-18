@@ -5,9 +5,6 @@ CDUMonitorDB Data retrive (terminal)
 2. Install sqlite3 on both monitor system and remote system
 3. check sqlite version, make sure sqlite already installed
 4. Sqlite statement: 
-"""
-SELECT *, DATETIME('now') AS CurrentTime
-FROM Record
-ORDER BY DateTime1 DESC
-LIMIT 10;
-"""
+```
+sqlite3 CDUMonitorDB.db "Select T1, T2, P4, P5, DateTime1 from Record ORDER BY DateTime1 DESC LIMIT 1;"
+```
