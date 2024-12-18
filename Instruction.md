@@ -8,6 +8,7 @@ Start-Service sshd
 
 Set-Service -Name sshd -StartupType 'Automatic'
 ```
+automatically open ssh server when reboot
 
 
 set ssh password for remote windows for first time (usually Administrator)
