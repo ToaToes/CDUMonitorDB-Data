@@ -14,6 +14,6 @@ SSH Setup
 ``` ip config```
 write down the 10.xxx ip address on sheet
 3. set Adminastrator Password
-```net Administrator admin``` set password as admin
+```net user Administrator admin``` set password as admin
 
 
