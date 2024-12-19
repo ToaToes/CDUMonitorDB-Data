@@ -24,7 +24,12 @@ means to set the password as admin
 ```ssh Administrator@[ip]```
 and type in password
 
-5. Command Line + Sqlite statement: 
+for C3 use
+```
+ssh -o KexAlgorithms=diffie-hellman-group1-sha1 Administrator@10.3.7.253
+```
+
+6. Command Line + Sqlite statement: 
 ```
 sqlite3 CDUMonitorDB.db "Select T1, T2, P4, P5, DateTime1 from Record ORDER BY DateTime1 DESC LIMIT 1;"
 ```
