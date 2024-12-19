@@ -17,6 +17,12 @@ Start-Service sshd
 
 Set-Service -Name sshd -StartupType 'Automatic'
 ```
+```
+help
+Open PowerShell as an administrator 2. Stop the OpenSSH server by running Stop-Service sshd 3. Verify that the service has stopped by running Get-Service sshd 4. Start the OpenSSH server again with Start-Service sshd 5. Confirm that the service is running by re-running Get-Service sshd
+```
+
+
 2. Open PowerShell type:
 ``` ip config```
 write down the 10.xxx ip address on sheet
