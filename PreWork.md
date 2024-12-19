@@ -10,6 +10,13 @@ choose sqlite-tools-win-x64-3470200.zip
 
 SSH Setup
 1. 设置 -> 应用 -> 可选功能 -> 搜索SSH并下载
+```
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH'
+
+Start-Service sshd
+
+Set-Service -Name sshd -StartupType 'Automatic'
+```
 2. Open PowerShell type:
 ``` ip config```
 write down the 10.xxx ip address on sheet
