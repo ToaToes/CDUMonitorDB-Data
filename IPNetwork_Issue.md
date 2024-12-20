@@ -32,6 +32,7 @@ https://unix.stackexchange.com/questions/340844/how-to-enable-diffie-hellman-gro
 
 
 --------
+To show all ip address listing, and to find out the ***preferred*** and ***duplicate*** ip AddressState
 
 
 IPAddress         : 169.254.241.18
