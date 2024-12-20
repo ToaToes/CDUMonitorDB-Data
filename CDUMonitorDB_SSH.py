@@ -1,5 +1,3 @@
-# Author: Tom Chen
-
 import paramiko
 from paramiko.ssh_exception import SSHException, NoValidConnectionsError  # Import the correct SSHException
 import time
@@ -8,7 +6,6 @@ import socket #Timeout Exception
 
 # Function to execute an SQLite query remotely via SSH
 def execute_sqlite_query(host, port, username, password, db_path, query, timeout=30):
-    container = 1
 
     try:
         # Create an SSH client instance
@@ -90,6 +87,9 @@ hosts = [
     # Add more host details as needed
 ]
 
+# Container Number Shown
+container = 1
+
 # SQL query to execute (Modify with your actual query)
 query = "Select DateTime1, T1, T2, (T1-T2) As TempDifference, P4, P5 from Record ORDER BY DateTime1 DESC LIMIT 1;"  # Change as needed
 
@@ -102,11 +102,14 @@ for host_info in hosts:
     db_path = host_info["db_path"]
     
     # Execute SQLite query on each machine
-    print(f"\nExecuting query on {host}...")
+    print("\n[C" + str(container) + "]")
+    print(f"Executing query on {host}...")
     output = execute_sqlite_query(host, port, username, password, db_path, query)
     
     # Optionally, you can handle output here, e.g., save it to a file
     if output:
         print(f"Query result from {host}:")
-        print("Date               | T1 | T2 | Diff | P4 | P5")
+        print("Date               | T1 | T2 |Diff| P4 | P5")
         print(output)
+
+    container += 1
