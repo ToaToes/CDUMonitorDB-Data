@@ -1,6 +1,7 @@
 import paramiko
 from paramiko.ssh_exception import SSHException, NoValidConnectionsError  # Import the correct SSHException
 import time
+from datetime import datetime
 
 import socket #Timeout Exception
 
@@ -14,7 +15,8 @@ def execute_sqlite_query(host, port, username, password, db_path, query, timeout
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         
         # Connect to the remote host
-        print(f"Connecting to {host}...")
+
+        ###print(f"Connecting to {host}...")
         ssh.connect(host, port=port, username=username, password=password, timeout = timeout)
         
         # Format the SQLite query command
@@ -87,29 +89,61 @@ hosts = [
     # Add more host details as needed
 ]
 
+
+
+
+# Get the current timestamp in a desired format
+current_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # Example: 20241220_153045
+
+# Generate the file name with the timestamp
+output_file_name  = f"{current_timestamp}.txt"
+
+
+
+
 # Container Number Shown
 container = 1
 
 # SQL query to execute (Modify with your actual query)
-query = "Select DateTime1, T1, T2, (T1-T2) As TempDifference, P4, P5 from Record ORDER BY DateTime1 DESC LIMIT 1;"  # Change as needed
+query = "Select DateTime1, T2, T1, (T1-T2) As TempDifference, P4, P5 from Record ORDER BY DateTime1 DESC LIMIT 1;"  # Change as needed
 
-# Loop over the list of hosts and execute the SQLite query on each one
-for host_info in hosts:
-    host = host_info["host"]
-    port = host_info["port"]
-    username = host_info["username"]
-    password = host_info["password"]
-    db_path = host_info["db_path"]
-    
-    # Execute SQLite query on each machine
-    print("\n[C" + str(container) + "]")
-    print(f"Executing query on {host}...")
-    output = execute_sqlite_query(host, port, username, password, db_path, query)
-    
-    # Optionally, you can handle output here, e.g., save it to a file
-    if output:
-        print(f"Query result from {host}:")
-        print("Date               | T1 | T2 |Diff| P4 | P5")
-        print(output)
 
-    container += 1
+
+# Open the output file
+with open(output_file_name, "w") as file:
+    # Write the header
+    file.write("Results:\n")
+
+    # Loop over the list of hosts and execute the SQLite query on each one
+    for host_info in hosts:
+        host = host_info["host"]
+        port = host_info["port"]
+        username = host_info["username"]
+        password = host_info["password"]
+        db_path = host_info["db_path"]
+    
+        # Execute SQLite query on each machine
+        ### print("\n[C" + str(container) + "]")
+        file.write(f"\n[C{container}] on Host: {host}\n")
+
+        ### print(f"Executing query on {host}...")
+        output = execute_sqlite_query(host, port, username, password, db_path, query)
+    
+        # Optionally, you can handle output here, e.g., save it to a file
+        if output:
+
+            ###print(f"Query result from {host}:")
+            ###print("Date               | T2 | T1 |Diff| P4 | P5")
+            ###print(output)
+
+            file.write("Date                             | T2  | T1  |Diff | P4  | P5\n")
+            file.write(output + "\n")
+        
+        else:
+            file.write("No results returned, due to CDU down, or Data loss\n\n")
+
+        container += 1
+
+
+# End script
+print(f"Query results saved to {output_file_name}")
