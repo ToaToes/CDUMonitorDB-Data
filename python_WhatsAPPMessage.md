@@ -1,3 +1,5 @@
+**https://medium.com/@vanshikar/automating-communication-with-python-whatsapp-email-and-sms-e2244b6eb98f**
+
 # Option 1: Using pywhatkit Library (for simple use cases)
 pywhatkit is a Python library that can help you send messages via WhatsApp on the web, automating the process of opening WhatsApp Web and sending messages.
 
