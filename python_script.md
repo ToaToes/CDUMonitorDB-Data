@@ -4,6 +4,9 @@
 4. run ```python ssh.py``` to get the data
 
 Install:
+```
+pip install paramiko
+```
 Error : No module named 'psutil'
 ```
 pip install --upgrade psutil
