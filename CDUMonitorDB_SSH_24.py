@@ -263,7 +263,8 @@ while True: # Infinite loop to keep running the script
 
 
     # End script
-    print(f"Query results saved to {output_file_name}")
+    print(f"Query results saved to {output_file_name}\n\n")
+    print("-----------------------------------------------------------\n")
 
     #!!! Check memory usage and trigger garbage collection
     memory_garbageCollection(start_time, gc_interval)
