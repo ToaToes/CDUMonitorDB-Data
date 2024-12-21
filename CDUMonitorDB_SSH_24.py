@@ -272,5 +272,5 @@ while True: # Infinite loop to keep running the script
     # Sleep for the specified interval 5 min before running the script again
     time.sleep(interval)
     # reset the counter for counting
-    continer = 0
+    container = 1
 
