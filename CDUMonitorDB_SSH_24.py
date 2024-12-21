@@ -71,7 +71,7 @@ hosts = [
 
 
 # Function to check memory usage and trigger garbage collection
-def memory_garbageCollection():
+def memory_garbageCollection(start_time, gc_interval):
     #process = psutil.Process(os.getpid())
     #memory_info = process.memory_info()
     ### print(f"Memory usage before GC: {memory_info.rss / 1024 ** 2:.2f} MB")
@@ -266,7 +266,7 @@ while True: # Infinite loop to keep running the script
     print(f"Query results saved to {output_file_name}")
 
     #!!! Check memory usage and trigger garbage collection
-    memory_garbageCollection()
+    memory_garbageCollection(start_time, gc_interval)
 
     # Sleep for the specified interval 5 min before running the script again
     time.sleep(interval)
