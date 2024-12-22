@@ -15,3 +15,7 @@ Error : No module named 'psutil'
 ```
 pip install pywhatkit
 ```
+
+
+For problem like pywhatkit opens new tab on browser:
+https://stackoverflow.com/questions/63741960/use-pywhatkkit-in-same-tab-instead-of-using-new
