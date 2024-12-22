@@ -192,7 +192,7 @@ def graphic_record(container, output, boundVal):
 # Function to generate an alert, send an email, or perform any other action (WhatsApp, SMS, etc.)
 def Alert_Data(container, T1, T2, P4, P5, boundVal):
     if float(T1) >= boundVal.T1_upper or float(T1) <= boundVal.T1_lower:
-        message = f"!!![C{container}]: Temperature T1 is out of range: {T1}°C"
+        message = f"!!! [C{container}]: Temperature T1 is out of range: {T1}°C\nT1: {T1}°C, T2: {T2}°C, P4: {P4}, P5: {P5}"
         # print("[T1] Temperature exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
@@ -201,7 +201,7 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         print("WhatsApp message sent!")
 
     if float(T2) >= boundVal.T2_upper:
-        message = f"!!![C{container}]: Temperature T2 is too high: {T2}°C"
+        message = f"!!! [C{container}]: Temperature T2 is too high: {T2}°C\nT1: {T1}°C, T2: {T2}°C, P4: {P4}, P5: {P5}"
         # print("[T2] Temperature is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
@@ -210,7 +210,7 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         print("WhatsApp message sent!")
 
     if float(T2) - float(T1) >= boundVal.TempDifference_upper:
-        message = f"!!![C{container}]: Temperature difference is too high: {float(T2) - float(T1)}°C"
+        message = f"!!! [C{container}]: Temperature difference is too high: {float(T2) - float(T1)}°C\nT1: {T1}°C, T2: {T2}°C, P4: {P4}, P5: {P5}"
         # print("Temperature difference is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
@@ -219,7 +219,7 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         print("WhatsApp message sent!")
 
     if float(P4) >= boundVal.P4_upper or float(P4) <= boundVal.P4_lower:
-        message = f"!!![C{container}]: Pressure P4 is out of range: {P4}"
+        message = f"!!! [C{container}]: Pressure P4 is out of range: {P4}\nT1: {T1}°C, T2: {T2}°C, P4: {P4}, P5: {P5}"
         print("[P4] Pressure exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
@@ -228,7 +228,7 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         print("WhatsApp message sent!")
 
     if float(P5) >= boundVal.P5_upper:
-        message = f"!!![C{container}]: Pressure P5 is too high: {P5}"
+        message = f"!!! [C{container}]: Pressure P5 is too high: {P5}\nT1: {T1}°C, T2: {T2}°C, P4: {P4}, P5: {P5}"
         # print("[P5] Pressure is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
@@ -308,8 +308,3 @@ while True: # Infinite loop to keep running the script
     time.sleep(interval)
     # reset for container counting
     container = 1
-
-
-
-
-
