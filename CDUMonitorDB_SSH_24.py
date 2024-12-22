@@ -15,8 +15,32 @@ import pywhatkit # For sending WhatsApp messages
 # Container Number Shown
 container = 1
 
+
 # Define the Phone Number
-phone_number = "+1234567890"  # Replace with your phone number
+phone_number = "+14378781006"  # Replace with your phone number
+
+
+# Boundary Values class to store the upper and lower limits for each parameter
+class BoundaryValues:
+    def __init__(self, T1_upper, T1_lower, T2_upper, TempDifference_upper, P4_upper, P4_lower, P5_upper):
+        self.T1_upper = T1_upper
+        self.T1_lower = T1_lower
+        self.T2_upper = T2_upper
+        self.TempDifference_upper = TempDifference_upper
+        self.P4_upper = P4_upper
+        self.P4_lower = P4_lower
+        self.P5_upper = P5_upper
+# Create an instance of the BoundaryValues class with the desired limits
+boundVal = BoundaryValues(
+    T1_lower=15, # Lower limit for T1
+    T1_upper=30, # Upper limit for T1
+    T2_upper=50, # Upper limit for T2
+    TempDifference_upper=15, # Upper limit for temperature difference
+    P4_lower=0.8, # Lower limit for P4
+    P4_upper=1.5, # Upper limit for P4
+    P5_upper=3.5  # Upper limit for P5
+)
+
 
 
 ### [Variables to configure the script]
@@ -69,6 +93,8 @@ hosts = [
     # Add more host details as needed
 ]
 
+
+# [Function Definitions]
 
 # Function to check memory usage and trigger garbage collection
 def memory_garbageCollection(start_time, gc_interval):
@@ -143,7 +169,7 @@ def execute_sqlite_query(host, port, username, password, db_path, query, timeout
 
 
 # Function to generate a graphic record
-def graphic_record():
+def graphic_record(output, boundVal):
     
     result = output.split("|")
 
@@ -157,51 +183,59 @@ def graphic_record():
         P5 = result[5].strip()
 
         # Alert
-        Alert_Data(T2, T1, P4, P5)
+        Alert_Data(T2, T1, P4, P5, boundVal)
 
     # for Debug need, add the following line
 
     
 # Function to generate an alert, send an email, or perform any other action (WhatsApp, SMS, etc.)
-def Alert_Data(T1, T2, P4, P5):
-    if float(T1) >= 30 or float(T1) <= 15:
+def Alert_Data(T1, T2, P4, P5, boundVal):
+    if float(T1) >= boundVal.T1_upper or float(T1) <= boundVal.T1_lower:
         message = f"Temperature T1 is out of range: {T1}°C"
         # print("[T1] Temperature exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
         pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        # Displaying a Success Message
+        print("WhatsApp message sent!")
 
-    if float(T2) >= 50:
+    if float(T2) >= boundVal.T2_upper:
         message = f"Temperature T2 is too high: {T2}°C"
         # print("[T2] Temperature is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
         pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        # Displaying a Success Message
+        print("WhatsApp message sent!")
 
-    if float(T2) - float(T1) >= 15:
+    if float(T2) - float(T1) >= boundVal.TempDifference_upper:
         message = f"Temperature difference is too high: {float(T2) - float(T1)}°C"
         # print("Temperature difference is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
         pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        # Displaying a Success Message
+        print("WhatsApp message sent!")
 
-    if float(P4) >= 1.5 or float(P4) <= 0.8:
+    if float(P4) >= boundVal.P4_upper or float(P4) <= boundVal.P4_lower:
         message = f"Pressure P4 is out of range: {P4}"
         print("[P4] Pressure exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
         pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        # Displaying a Success Message
+        print("WhatsApp message sent!")
 
-    if float(P5) >= 3.5:
+    if float(P5) >= boundVal.P5_upper:
         message = f"Pressure P5 is too high: {P5}"
         # print("[P5] Pressure is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
         pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        # Displaying a Success Message
+        print("WhatsApp message sent!")
 
 
-    # Displaying a Success Message
-    print("WhatsApp message sent!")
 
 # Function to Send WhatsApp Message
 def send_whatsapp_message():
@@ -254,7 +288,7 @@ while True: # Infinite loop to keep running the script
                 file.write(output + "\n")
 
                 #!!! Generate a graphic record for continues monitoring
-                graphic_record(output) 
+                graphic_record(output, boundVal) 
         
             else:
                 file.write("No results returned, due to CDU down, or Data loss\n\n")
@@ -264,13 +298,17 @@ while True: # Infinite loop to keep running the script
 
     # End script
     print(f"Query results saved to {output_file_name}\n\n")
-    print("-----------------------------------------------------------\n")
+    print("---------------------------------------------------\n")
 
     #!!! Check memory usage and trigger garbage collection
     memory_garbageCollection(start_time, gc_interval)
 
     # Sleep for the specified interval 5 min before running the script again
     time.sleep(interval)
-    # reset the counter for counting
+    # reset for container counting
     container = 1
+
+
+
+
 
