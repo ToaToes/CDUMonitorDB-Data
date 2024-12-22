@@ -17,5 +17,6 @@ pip install pywhatkit
 ```
 
 
-For problem like pywhatkit opens new tab on browser:
-https://stackoverflow.com/questions/63741960/use-pywhatkkit-in-same-tab-instead-of-using-new
+For problem like pywhatkit opens new tab on browser: <br/>
+https://stackoverflow.com/questions/63741960/use-pywhatkkit-in-same-tab-instead-of-using-new <br/>
+https://pypi.org/project/pywhatkit/
