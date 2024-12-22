@@ -16,8 +16,9 @@ import pywhatkit # For sending WhatsApp messages
 container = 1
 
 
-# Define the Phone Number
+# Define the Number
 phone_number = "+14378781006"  # Replace with your phone number
+groupID = "HgJMTs9Kw9MLU1NHETjd3B"  # Replace with your group ID
 
 
 # Boundary Values class to store the upper and lower limits for each parameter
@@ -169,7 +170,7 @@ def execute_sqlite_query(host, port, username, password, db_path, query, timeout
 
 
 # Function to generate a graphic record
-def graphic_record(output, boundVal):
+def graphic_record(container, output, boundVal):
     
     result = output.split("|")
 
@@ -183,55 +184,55 @@ def graphic_record(output, boundVal):
         P5 = result[5].strip()
 
         # Alert
-        Alert_Data(T2, T1, P4, P5, boundVal)
+        Alert_Data(container, T2, T1, P4, P5, boundVal)
 
     # for Debug need, add the following line
 
     
 # Function to generate an alert, send an email, or perform any other action (WhatsApp, SMS, etc.)
-def Alert_Data(T1, T2, P4, P5, boundVal):
+def Alert_Data(container, T1, T2, P4, P5, boundVal):
     if float(T1) >= boundVal.T1_upper or float(T1) <= boundVal.T1_lower:
-        message = f"Temperature T1 is out of range: {T1}°C"
+        message = f"!!![C{container}]: Temperature T1 is out of range: {T1}°C"
         # print("[T1] Temperature exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
     if float(T2) >= boundVal.T2_upper:
-        message = f"Temperature T2 is too high: {T2}°C"
+        message = f"!!![C{container}]: Temperature T2 is too high: {T2}°C"
         # print("[T2] Temperature is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
     if float(T2) - float(T1) >= boundVal.TempDifference_upper:
-        message = f"Temperature difference is too high: {float(T2) - float(T1)}°C"
+        message = f"!!![C{container}]: Temperature difference is too high: {float(T2) - float(T1)}°C"
         # print("Temperature difference is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
     if float(P4) >= boundVal.P4_upper or float(P4) <= boundVal.P4_lower:
-        message = f"Pressure P4 is out of range: {P4}"
+        message = f"!!![C{container}]: Pressure P4 is out of range: {P4}"
         print("[P4] Pressure exceeds limit. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
     if float(P5) >= boundVal.P5_upper:
-        message = f"Pressure P5 is too high: {P5}"
+        message = f"!!![C{container}]: Pressure P5 is too high: {P5}"
         # print("[P5] Pressure is too high. Sending an alert...")
         # Send an email, SMS, or perform any other action to alert the team
         # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_instantly(phone_number, message)
+        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
@@ -288,7 +289,7 @@ while True: # Infinite loop to keep running the script
                 file.write(output + "\n")
 
                 #!!! Generate a graphic record for continues monitoring
-                graphic_record(output, boundVal) 
+                graphic_record(container, output, boundVal) 
         
             else:
                 file.write("No results returned, due to CDU down, or Data loss\n\n")
