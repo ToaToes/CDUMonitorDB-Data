@@ -1,3 +1,8 @@
+Host * 
+    PubkeyAcceptedAlgorithms +ssh-rsa 
+    HostKeyAlgorithms +ssh-rsa 
+    MACs hmac-sha1,hmac-md5
+
 Host 10.1.7.159
 	ControlMaster auto
 	ControlPath ~/.ssh/%r@%h:%p
