@@ -1,4 +1,4 @@
-SQLITE 3 Setup
+## SQLITE 3 Setup
 1. Remote Windows, Download sqlite3 file:
 ```https://www.sqlite.org/download.html```
 choose sqlite-tools-win-x64-3470200.zip
@@ -8,7 +8,7 @@ choose sqlite-tools-win-x64-3470200.zip
 ```https://dev.to/dendihandian/installing-sqlite3-in-windows-44eb```
 
 
-SSH Setup
+## SSH Setup
 1. 设置 -> 应用 -> 可选功能 -> 搜索SSH并下载
 ```
 Start-Service sshd
