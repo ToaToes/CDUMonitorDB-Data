@@ -38,3 +38,12 @@ useful when you need to maintain long-lived connections, avoid re-authentication
 
 4. in .ssh file, create a config file for master ssh, to store the hosts
 -> OR download the config file and move to the .ssh file
+   
+Mac:
+```
+nano config
+```
+Windows:
+```
+notepad config
+```
