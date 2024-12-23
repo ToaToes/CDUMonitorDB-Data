@@ -17,6 +17,7 @@ from selenium import webdriver
 container = 1
 
 # Initilaize the WhatsApp Web
+# Add the path to the default browser
 driver_path = ""
 driver = webdriver.Chrome(executable_path=driver_path)
 driver.get("https://web.google.com/")
