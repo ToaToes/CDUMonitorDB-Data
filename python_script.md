@@ -20,3 +20,10 @@ pip install pywhatkit
 For problem like pywhatkit opens new tab on browser: <br/>
 https://stackoverflow.com/questions/63741960/use-pywhatkkit-in-same-tab-instead-of-using-new <br/>
 https://pypi.org/project/pywhatkit/
+
+
+https://docs.python.org/3/library/webbrowser.html#webbrowser.controller.open
+```
+controller.open(url, new=0, autoraise=True)
+Display url using the browser handled by this controller. If new is 1, a new browser window is opened if possible. If new is 2, a new browser page (“tab”) is opened if possible.
+```
