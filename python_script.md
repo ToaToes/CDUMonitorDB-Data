@@ -27,5 +27,4 @@ https://docs.python.org/3/library/webbrowser.html#webbrowser.controller.open
 controller.open(url, new=0, autoraise=True)
 ```
 
-
-https://stackoverflow.com/questions/701746/how-to-force-web-browser-control-to-always-open-web-page-in-the-same-window
+(https://stackoverflow.com/questions/71680422/python-displaying-a-web-site-in-the-same-browser-tab-each-time-webbrowser-open)
