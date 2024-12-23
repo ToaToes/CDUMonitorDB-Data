@@ -31,3 +31,7 @@ Test SSH connection on monitor system to the remote system, mark the sheets
 
 ``` ssh Administrator@[ip address]```
 type in password
+
+
+3. in .ssh file, create a config file for master ssh, to store the hosts
+-> OR download the config file and move to the .ssh file
