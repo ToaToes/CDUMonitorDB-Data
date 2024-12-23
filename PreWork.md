@@ -33,5 +33,8 @@ Test SSH connection on monitor system to the remote system, mark the sheets
 type in password
 
 
+### For Persisten SSH conneciton
+useful when you need to maintain long-lived connections, avoid re-authentication, and reduce the overhead of reconnecting to the server.
+
 3. in .ssh file, create a config file for master ssh, to store the hosts
 -> OR download the config file and move to the .ssh file
