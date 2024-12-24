@@ -47,3 +47,11 @@ Windows:
 ```
 notepad config
 ```
+
+
+### When Restarting system, since ssh sets the passwords of the remote system, an there is no keyboard
+1. ssh to the remote system
+2. ```net user Administrator ""``` set the password to empty
+3. when remote system log in to see CDU Monitor
+4. set the password back to "admin"
+5. ssh and ```net user Administrator admin```
