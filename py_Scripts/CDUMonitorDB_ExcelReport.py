@@ -1,3 +1,5 @@
+### Author: Tom Chen
+
 import paramiko
 from paramiko.ssh_exception import SSHException, NoValidConnectionsError  # Import the correct SSHException
 import time
@@ -169,6 +171,13 @@ for host_info in hosts:
         ### print(f"Executing query on {host}...")
         output = execute_sqlite_query(host, port, username, password, db_path, query)
     
+
+        # To handle time slot
+        datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        datetime_obj = datetime.strptime(datetime_now, '%Y-%m-%d %H:%M:%S')
+        day_night = "Day" if 6 <= datetime_obj.hour < 18 else "Night"
+
+
         # Optionally, you can handle output here, e.g., save it to a file
         if output:
 
@@ -179,12 +188,12 @@ for host_info in hosts:
                 columns = [col.strip() for col in columns]
 
                 # Determine Day or Night based on the time
-                datetime_str = columns[0]
-                datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
-                if 6 <= datetime_obj.hour < 18:    # Day from 6:00 - 18:00
-                    day_night = "Day"
-                else:    # Night from 18:00 - 6:00
-                    day_night = "Night"
+                # datetime_str = columns[0]
+                # datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                # if 6 <= datetime_obj.hour < 18:    # Day from 6:00 - 18:00
+                #     day_night = "Day"
+                # else:    # Night from 18:00 - 6:00
+                #     day_night = "Night"
 
                 columns.insert(1, day_night) # Insert the Shift at the second position
 
@@ -198,7 +207,8 @@ for host_info in hosts:
                 all_results.append(columns)
         
         else:
-            all_results.append([f"No results returned for C{container}", "", "", "", "", ""])
+            # Handle the case where no data parsed
+            all_results.append([datetime_now, day_night, f"C{container}", "", "", "", "", ""])
 
     # Increment the container number as counter
     container += 1
