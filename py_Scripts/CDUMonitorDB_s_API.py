@@ -6,32 +6,6 @@ import re
 from xml.etree import ElementTree
 
 
-url_container = [
-http://10.1.7.159:8600/DataService.asmx,
-http://10.2.7.252:8600/DataService.asmx,
-http://10.3.7.252:8600/DataService.asmx,
-http://10.4.7.252:8600/DataService.asmx,
-http://10.5.7.252:8600/DataService.asmx,
-http://10.6.7.252:8600/DataService.asmx,
-http://10.7.7.252:8600/DataService.asmx,
-http://10.8.7.252:8600/DataService.asmx,
-http://10.9.7.252:8600/DataService.asmx,
-http://10.10.7.253:8600/DataService.asmx,
-http://10.11.7.252:8600/DataService.asmx,
-http://10.12.7.252:8600/DataService.asmx,
-http://10.13.7.253:8600/DataService.asmx,
-http://10.14.7.252:8600/DataService.asmx,
-http://10.15.7.253:8600/DataService.asmx,
-http://10.16.7.253:8600/DataService.asmx,
-http://10.17.7.253:8600/DataService.asmx,
-http://10.18.7.253:8600/DataService.asmx,
-http://10.19.7.253:8600/DataService.asmx,
-http://10.20.7.253:8600/DataService.asmx,
-http://10.21.7.253:8600/DataService.asmx
-]
-
-
-
 # SOAP request body
 soap_request = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
