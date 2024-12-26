@@ -8,6 +8,10 @@ pip install requests
 Python Code to call the SOAP API:
 ```
 import requests
+
+import json
+
+import re
 ```
 
 ### Define the SOAP endpoint
