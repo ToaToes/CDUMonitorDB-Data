@@ -9,3 +9,9 @@ ssh in to the remote system and perform:
 netsh advfirewall firewall show rule name="CDU"
 ```
 to check the inbound for get-data from CDU port
+
+
+on PowerShell
+```
+Get-NetFirewallRule
+```
