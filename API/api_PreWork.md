@@ -15,3 +15,14 @@ on PowerShell
 ```
 Get-NetFirewallRule
 ```
+
+### API CALL:
+P5P1	压力P1	299
+P5P2	压力P2	301
+P5P3	压力P3	303
+P5P4	压力P4	305
+P5P5	压力P5	307
+P5T1	温度T1	328
+P5T2	温度T2	330
+P5HZ1	变频器频率	318
+<img width="542" alt="image" src="https://github.com/user-attachments/assets/21c6a2ba-a6d3-46f7-84af-d876885170ff" />
