@@ -27,3 +27,12 @@ P5T2	温度T2	  330 <br/>
 P5HZ1	变频器频率	318
 <br/>
 <img width="542" alt="image" src="https://github.com/user-attachments/assets/21c6a2ba-a6d3-46f7-84af-d876885170ff" />
+
+python import:
+```
+import requests
+
+import json
+
+import re
+```
