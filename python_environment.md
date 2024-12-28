@@ -2,7 +2,7 @@ https://medium.com/marvelous-mlops/the-rightway-to-install-python-on-a-mac-f3146
 
 
 
-On Mac: hitting externally managed 
+On Mac: hitting externally managed <br/>
 https://discuss.python.org/t/on-macos-14-pip-install-throws-error-externally-managed-environment/50352/9
 
 https://stackoverflow.com/questions/60309393/how-to-install-python-requests-on-macos
