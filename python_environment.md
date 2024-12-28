@@ -8,3 +8,18 @@ https://discuss.python.org/t/on-macos-14-pip-install-throws-error-externally-man
 https://stackoverflow.com/questions/60309393/how-to-install-python-requests-on-macos
 
 https://www.youtube.com/watch?v=JazffJZexzs
+
+
+Have to create an virtual environment for the Python to run
+```
+python3 -m venv task
+
+source task/bin/activate
+
+pip install requests
+pip install paramiko
+......
+
+deactivate
+
+```
