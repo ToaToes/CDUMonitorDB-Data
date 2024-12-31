@@ -28,3 +28,8 @@ controller.open(url, new=0, autoraise=True)
 ```
 
 (https://stackoverflow.com/questions/71680422/python-displaying-a-web-site-in-the-same-browser-tab-each-time-webbrowser-open)
+
+for selenium install and use:
+```
+pip install webdriver_manager
+```
