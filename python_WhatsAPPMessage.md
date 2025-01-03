@@ -74,3 +74,25 @@ body: The content of the message.
 Reliability: Twilio provides a robust and production-ready API.
 No Web Automation: Unlike pywhatkit, Twilio doesn't require interacting with WhatsApp Web or opening a browser.
 Business-Grade Solution: You can use this for real-world applications and integrate it into systems.
+
+
+_____________
+
+# Change INPUT Language, before sending alert on WhatsAPP, make sure its English
+
+```
+pip install pywin32
+```
+
+```
+import win32api
+import win32con
+
+...
+
+# change to English input
+win32api.PostMessage(0, win32con.WM_INPUTLANGCHANGEREQUEST, 0, 0x0409)
+
+# change to Chinese input
+win32api.PostMessage(0, win32con.WM_INPUTLANGCHANGEREQUEST, 0, 0x0804)
+```
