@@ -96,3 +96,13 @@ win32api.PostMessage(0, win32con.WM_INPUTLANGCHANGEREQUEST, 0, 0x0409)
 # change to Chinese input
 win32api.PostMessage(0, win32con.WM_INPUTLANGCHANGEREQUEST, 0, 0x0804)
 ```
+
+OR
+```
+from win32con import WM_INPUTLANGCHANGEREQUEST
+from win32gui import GetForegroundWindow
+from win32api import SendMessage
+
+if SendMessage( GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 0, 0x4090409) == 0:
+    print('設定英文鍵盤成功！')
+```
