@@ -10,7 +10,14 @@ import os
 import psutil # For checking memory usage
 import pywhatkit # For sending WhatsApp messages
 
+# Change Language Input
+import win32api
+import win32con
+
+
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 # Container Number Shown
@@ -18,9 +25,10 @@ container = 1
 
 # Initilaize the WhatsApp Web
 # Add the path to the default browser
-driver_path = ""
-driver = webdriver.Chrome(executable_path=driver_path)
-driver.get("https://web.google.com/")
+# Setup the path for ChromeDriver (either manually or via webdriver-manager)
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service)
+driver.get("https://google.com/")
 
 # Define the Number
 phone_number = "+14378781006"  # Replace with your phone number
@@ -29,22 +37,22 @@ groupID = "HgJMTs9Kw9MLU1NHETjd3B"  # Replace with your group ID
 
 # Boundary Values class to store the upper and lower limits for each parameter
 class BoundaryValues:
-    def __init__(self, T1_upper, T1_lower, T2_upper, TempDifference_upper, P4_upper, P4_lower, P5_upper):
+    def __init__(self, T1_upper, T1_lower, T2_upper, TempDifference_upper, P5_upper):   # Remove P4_upper, P4_lower
         self.T1_upper = T1_upper
         self.T1_lower = T1_lower
         self.T2_upper = T2_upper
         self.TempDifference_upper = TempDifference_upper
-        self.P4_upper = P4_upper
-        self.P4_lower = P4_lower
+        # self.P4_upper = P4_upper
+        # self.P4_lower = P4_lower
         self.P5_upper = P5_upper
 # Create an instance of the BoundaryValues class with the desired limits
 boundVal = BoundaryValues(
-    T1_lower=15, # Lower limit for T1
-    T1_upper=30, # Upper limit for T1
+    T1_lower=22, # Lower limit for T1
+    T1_upper=35, # Upper limit for T1
     T2_upper=50, # Upper limit for T2
     TempDifference_upper=15, # Upper limit for temperature difference
-    P4_lower=0.8, # Lower limit for P4
-    P4_upper=1.5, # Upper limit for P4
+    # P4_lower=0.8, # Lower limit for P4
+    # P4_upper=1.5, # Upper limit for P4
     P5_upper=3.5  # Upper limit for P5
 )
 
@@ -54,7 +62,7 @@ boundVal = BoundaryValues(
 ###
 ###
 # Time interval in seconds to wait between each query (5 min = 300 seconds) (10 min = 600 seconds)
-interval = 300
+interval = 600
 # SQL query to execute (Modify with your actual query)
 query = "Select DateTime1, T2, T1, (T1-T2) As TempDifference, P4, P5 from Record ORDER BY DateTime1 DESC LIMIT 1;"  # Change as needed
 
@@ -84,7 +92,7 @@ hosts = [
     {"host": "10.8.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.9.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.10.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
-    {"host": "10.11.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
+    ### {"host": "10.11.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.12.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.13.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.14.7.252", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
@@ -92,7 +100,7 @@ hosts = [
     {"host": "10.16.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.17.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.18.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
-    {"host": "10.19.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
+    ### {"host": "10.19.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.20.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
     {"host": "10.21.7.253", "port": 22, "username": "Administrator", "password": "admin", "db_path": r"D:\CDUMonitorDB\CDUMonitorDB.db"},
 
@@ -189,8 +197,12 @@ def graphic_record(container, output, boundVal):
         P4 = result[4].strip()
         P5 = result[5].strip()
 
+
+        # Before Alert, change the language input first
+        win32api.PostMessage(0, win32con.WM_INPUTLANGCHANGEREQUEST, 0, 0x0409)
+
         # Alert
-        Alert_Data(container, T2, T1, P4, P5, boundVal)
+        Alert_Data(container, T2, T1, P4, P5, boundVal)   #Show P4
 
     # for Debug need, add the following line
 
@@ -224,14 +236,14 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         # Displaying a Success Message
         print("WhatsApp message sent!")
 
-    if float(P4) >= boundVal.P4_upper or float(P4) <= boundVal.P4_lower:
-        message = f"[C{container} Alert]:\nPressure P4 is out of range: {P4}\nT1: {T1}°C,\nT2: {T2}°C,\nP4: {P4},\nP5: {P5}"
-        # print("[P4] Pressure exceeds limit. Sending an alert...")
-        # Send an email, SMS, or perform any other action to alert the team
-        # Sending the WhatsApp Message
-        pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
-        # Displaying a Success Message
-        print("WhatsApp message sent!")
+    # if float(P4) >= boundVal.P4_upper or float(P4) <= boundVal.P4_lower:
+        # message = f"[C{container} Alert]:\nPressure P4 is out of range: {P4}\nT1: {T1}°C,\nT2: {T2}°C,\nP4: {P4},\nP5: {P5}"
+        ### print("[P4] Pressure exceeds limit. Sending an alert...")
+        ### Send an email, SMS, or perform any other action to alert the team
+        ### Sending the WhatsApp Message
+        # pywhatkit.sendwhatmsg_to_group_instantly(groupID, message)
+        ### Displaying a Success Message
+        # print("WhatsApp message sent!")
 
     if float(P5) >= boundVal.P5_upper:
         message = f"[C{container} Alert]:\n Pressure P5 is too high: {P5}\nT1: {T1}°C,\nT2: {T2}°C,\nP4: {P4},\nP5: {P5}"
@@ -248,14 +260,6 @@ def Alert_Data(container, T1, T2, P4, P5, boundVal):
         if handle != handles[0]:
             driver.switch_to.window(handle)
             driver.close()
-
-
-
-# Function to Send WhatsApp Message
-def send_whatsapp_message():
-    # Use Twilio API to send a WhatsApp message - pay
-    pass
-
 
 
 
@@ -308,6 +312,9 @@ while True: # Infinite loop to keep running the script
                 file.write("No results returned, due to CDU down, or Data loss\n\n")
 
             container += 1
+            # To filter c11 and c19
+            if container == 11 or container == 19:
+                container += 1
 
 
     # End script
