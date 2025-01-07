@@ -1,7 +1,3 @@
-# Call for SoapAPI
-# Every (hour) generate result to one Excel report
-# Send Alert for exceeding threshold to WhatsAPP for Alert
-# No need for SSH or Password authentication
 # Author: Tom Chen
 
 import requests
@@ -24,7 +20,9 @@ import pywhatkit # For sending WhatsApp messages
 import win32api
 import win32con
 
-
+### [Variables to configure the script]
+###
+###
 ### [result write to ONE Excel file]
 result_Excel_Path = r'C:\Users\jinhu\Desktop\ssh_script\API_C_Result.xlsx'
 
@@ -74,6 +72,8 @@ current_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # Example: 2024122
 ###
 # Time interval in seconds to wait between each query (5 min = 300 seconds) (10 min = 600 seconds)
 interval = 600
+# Time interval in seconds for generating Excel reports every hour
+excel_interval = 600 * 6
 
 
 ### [Variables to track time for garbage collection]
@@ -136,6 +136,25 @@ headers = {
 ### [Function Define]
 ###
 ###
+# Function to check memory usage and trigger garbage collection
+def memory_garbageCollection(start_time, gc_interval):
+    #process = psutil.Process(os.getpid())
+    #memory_info = process.memory_info()
+    ### print(f"Memory usage before GC: {memory_info.rss / 1024 ** 2:.2f} MB")
+
+    elapsed_time = time.time() - start_time
+    if elapsed_time > gc_interval:  
+        print("48 hours have passed. Triggering garbage collection.")
+        # gc.collect()  # Perform garbage collection
+        os.system('clear')  # clear terminal buffer
+        start_time = time.time()  # Reset the timer after garbage collection
+
+    # Check memory usage after GC
+    #memory_info = process.memory_info() 
+    ### print(f"Memory usage after GC: {memory_info.rss / 1024 ** 2:.2f} MB")
+
+
+
 # Alert the Data
 def alert_Data(col, boundVal):   #col[2, 4, 5, 6, 7, 8, 9] ->Container#, T2, T1, T2-T1, P4, P5, pump
     # T2 Alert -> col[4]
@@ -308,6 +327,9 @@ def process_response(response, container):
 
 
 
+### Main Logic
+###
+###
 
 # Send SOAP requests to each URL in the list
 for url in url_container:
@@ -360,3 +382,12 @@ else:
         print(f"Query results saved to {result_Excel_Path}")
     except Exception as e:
         print(f"Error saving the new Excel file: {e}")
+
+# End of the script
+print("\n\n---------------------------------------------------\n\n")
+
+#!!! Check memory usage and trigger garbage collection
+memory_garbageCollection(start_time, gc_interval)
+
+# Sleep for the specified interval 5 min before running the script again
+time.sleep(interval)
