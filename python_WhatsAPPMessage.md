@@ -106,3 +106,7 @@ from win32api import SendMessage
 if SendMessage( GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 0, 0x4090409) == 0:
     print('設定英文鍵盤成功！')
 ```
+
+
+
+## Use selenium -> https://www.lambdatest.com/blog/automate-whatsapp-messages-using-python/
