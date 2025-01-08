@@ -1,6 +1,7 @@
 # Every (hour) generate result to one Excel report
 # Send Alert for exceeding threshold to WhatsAPP for Alert
 # No need for SSH or Password authentication
+#
 # Author: Tom Chen
 
 import requests
@@ -27,7 +28,7 @@ import win32con
 ###
 ###
 ### [result write to ONE Excel file]
-result_Excel_Path = r'C:\Users\jinhu\Desktop\ssh_script\API_C_Result.xlsx'
+result_Excel_Path = r'C:\Users\lucca\Desktop\API_C_Result.xlsx'
 
 ### [Container Number Shown]
 container = 1
@@ -82,7 +83,10 @@ excel_interval = 600 * 6
 ### [Variables to track time for garbage collection]
 ###
 ###
-start_time = time.time()  # Start time of the script
+# Start time of the script # Start time for Excel report generation
+s_start = time.time()
+start_time = s_start  
+excel_time = s_start
 gc_interval = 48 * 60 * 60  # Garbage collection interval in seconds: 48 hours
 
 
@@ -155,7 +159,6 @@ def memory_garbageCollection(start_time, gc_interval):
     # Check memory usage after GC
     #memory_info = process.memory_info() 
     ### print(f"Memory usage after GC: {memory_info.rss / 1024 ** 2:.2f} MB")
-
 
 
 # Alert the Data
@@ -276,35 +279,35 @@ def process_response(response, container):
                         #    print(f"Temp: {item['ValueShow']}")
                         #    columns.insert(3, item['ValueShow']) # to add temperature
                         if item.get("Key") == "P5T1":
-                            print(f"T1: {item['ValueShow']}")
+                            # print(f"T1: {item['ValueShow']}")
                             T1 = float(re.sub(r'[^\d.]+', '', item['ValueShow']))
                             # columns.insert(5, T1)
                             columns[5] = str(T1)
                         if item.get("Key") == "P5T2":
-                            print(f"T2: {item['ValueShow']}")
+                            # print(f"T2: {item['ValueShow']}")
                             T2 = float(re.sub(r'[^\d.]+', '', item['ValueShow']))
                             # columns.insert(4, T2)
                             columns[4] = str(T2)
 
                             # To convert the decimal nums
                             differ = f"{T1-T2: .2f}"
-                            print(f"Temprature Difference is {differ}")
+                            # print(f"Temprature Difference is {differ}")
                             # columns.insert(6, differ)
                             columns[6] = str(differ)
 
                         if item.get("Key") == "P5P4":
-                            print(f"P4: {item['ValueShow']}")
+                            # print(f"P4: {item['ValueShow']}")
                             P4 = float(re.sub(r'[^\d.]+', '', item['ValueShow']))
                             # columns.insert(7, P4)
                             columns[7] = P4
                         if item.get("Key") == "P5P5":
-                            print(f"P5: {item['ValueShow']}")
+                            # print(f"P5: {item['ValueShow']}")
                             P5 = float(re.sub(r'[^\d.]+', '', item['ValueShow']))
                             # columns.insert(8, P5)
                             columns[8] = P5
 
                         if item.get("Key") == "P5HZ1":
-                            print(f"Pump: {item['ValueShow']}\n")
+                            # print(f"Pump: {item['ValueShow']}\n")
                             pump = float(re.sub(r'[^\d.]+', '', item['ValueShow']))
                             # columns.insert(9, pump)
                             columns[9] = pump
@@ -333,64 +336,72 @@ def process_response(response, container):
 ### Main Logic
 ###
 ###
+while True:
 
-# Send SOAP requests to each URL in the list
-for url in url_container:
-    # print(f"Sending request to {url}")
-    try:
-        # Send the SOAP request
-        response = requests.post(url, data=soap_request, headers=headers)
+    # Send SOAP requests to each URL in the list
+    for url in url_container:
+        # print(f"Sending request to {url}")
+        try:
+            # Send the SOAP request
+            response = requests.post(url, data=soap_request, headers=headers)
 
-        # Process the response
-        print(f"\n[C{container}]:")
-        process_response(response, container)
+            # Process the response
+            print(f"\n[C{container}]:")
+            process_response(response, container)
 
-    except requests.exceptions.RequestException as e:
-        print(f"\nRequest to C{container} failed: {e}")
-    container += 1
+        except requests.exceptions.RequestException as e:
+            print(f"\nRequest to C{container} failed: {e}")
+        container += 1
 
-# Re-define container number shown
-container = 1
-
-
-# Convert the results into a pnadas Dataframe
-df = pd.DataFrame(all_results, columns=["Date","Night/Day", "Container",  "环境温度", "T2", "T1", "TempDifference", "P4", "P5", "Pump"])
-
-# Reorder columns to match the desired order
-df = df[["Date", "Night/Day", "Container", "环境温度", "T2", "T1", "TempDifference", "P4", "P5", "Pump"]]
+    # Re-define container number shown
+    container = 1
 
 
-# Check if the file already exists
-if os.path.exists(result_Excel_Path):
-    # If it exists, read the existing file and append new data
-    try:
-        # Read the existsing file
-        existing_df = pd.read_excel(result_Excel_Path, engine = 'openpyxl')
+    # every 1 hour, generate the result to one Excel report
+    elapsed_excel_time = excel_time - time.time()
+    if elapsed_excel_time > excel_interval or excel_time == start_time: # every 1 hour generate the Excel report || first time 
 
-        # Append the new data to the existing DataFrame
-        updated_df = pd.concat([existing_df, df], ignore_index = True)
+        # Convert the results into a pnadas Dataframe
+        df = pd.DataFrame(all_results, columns=["Date","Night/Day", "Container",  "环境温度", "T2", "T1", "TempDifference", "P4", "P5", "Pump"])
+        # Reorder columns to match the desired order
+        df = df[["Date", "Night/Day", "Container", "环境温度", "T2", "T1", "TempDifference", "P4", "P5", "Pump"]]
 
-        # Write the updated DataFrame back to the Excel file
-        updated_df.to_excel(result_Excel_Path, index = False, engine = 'openpyxl')
+        # Check if the file already exists
+        if os.path.exists(result_Excel_Path):
+            # If it exists, read the existing file and append new data
+            try:
+                # Read the existsing file
+                existing_df = pd.read_excel(result_Excel_Path, engine = 'openpyxl')
 
-        print(f"Query results appended to {result_Excel_Path}")
-    
-    except Exception as e:
-        print(f"Error reading or writing to the Excel file: {e}")
+                # Append the new data to the existing DataFrame
+                updated_df = pd.concat([existing_df, df], ignore_index = True)
 
-else:
-    # If the file doesnt exist, create a new one
-    try:
-        df.to_excel(result_Excel_Path, index = False, engine = 'openpyxl')
-        print(f"Query results saved to {result_Excel_Path}")
-    except Exception as e:
-        print(f"Error saving the new Excel file: {e}")
+                # Write the updated DataFrame back to the Excel file
+                updated_df.to_excel(result_Excel_Path, index = False, engine = 'openpyxl')
 
-# End of the script
-print("\n\n---------------------------------------------------\n\n")
+                print(f"Query results appended to {result_Excel_Path}")
+        
+            except Exception as e:
+                print(f"Error reading or writing to the Excel file: {e}")
 
-#!!! Check memory usage and trigger garbage collection
-memory_garbageCollection(start_time, gc_interval)
+        else:
+            # If the file doesnt exist, create a new one
+            try:
+                df.to_excel(result_Excel_Path, index = False, engine = 'openpyxl')
+                print(f"Query results saved to {result_Excel_Path}")
+            except Exception as e:
+                print(f"Error saving the new Excel file: {e}")
 
-# Sleep for the specified interval 5 min before running the script again
-time.sleep(interval)
+        # Reset the timer for Excel report generation
+        excel_time = time.time()
+
+
+
+    # End of the script
+    print("\n\n---------------------------------------------------\n\n")
+
+    #!!! Check memory usage and trigger garbage collection
+    memory_garbageCollection(start_time, gc_interval)
+
+    # Sleep for the specified interval 5 min before running the script again
+    time.sleep(interval)
