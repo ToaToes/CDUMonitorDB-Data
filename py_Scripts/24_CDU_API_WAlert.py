@@ -28,7 +28,7 @@ import win32con
 ###
 ###
 ### [result write to ONE Excel file]
-result_Excel_Path = r'C:\Users\lucca\Desktop\API_C_Result.xlsx'
+result_Excel_Path = r'C:\Users\42591\Desktop\API_C_Result.xlsx'
 
 ### [Container Number Shown]
 container = 1
@@ -244,6 +244,7 @@ def process_response(response, container):
 
                 # Split the data using '&&&' to get the date time from the JSON data
                 datetime_str = data.split("&&&")[0].strip()    # get the first part before &&& for the time
+                
                 datetime_obj = datetime.strptime(datetime_str, '%Y/%m/%d %H:%M:%S')
                 
 
@@ -253,8 +254,8 @@ def process_response(response, container):
                 print(f"{datetime_str}")
 
                 ####
-                # columns.insert(0, datetime_str) # insert date
-                columns[0] = datetime_str
+                # columns.insert(0, datetime_str) # insert date  ### use time_first instead for Excel sheets
+                columns[0] = datetime_obj.strftime("%Y-%m-%d %p %I:%M:%S").replace("AM", "上午").replace("PM", "下午")
                 # columns.insert(1, day_night) # insert day/night
                 columns[1] = day_night
                 # columns.insert(2, f"C{container}") # insert container #
@@ -320,6 +321,7 @@ def process_response(response, container):
             
                 except json.JSONDecodeError as e:
                     print(f"Error decoding JSON: {e}")
+                    all_results.append([datetime_now, day_night, f"C{container}", "", "", "", "", ""])
 
             else:
                 all_results.append([datetime_now, day_night, f"C{container}", "", "", "", "", ""])
@@ -330,6 +332,7 @@ def process_response(response, container):
             print(f"Error processing response: {e}\n")
     else:
         print(f"Error: {response.status_code}")
+        all_results.append([datetime_now, day_night, f"C{container}", "", "", "", "", ""])
 
 
 
@@ -347,10 +350,14 @@ while True:
 
             # Process the response
             print(f"\n[C{container}]:")
+            # every container has the same time
+            # time_first = datetime.now().strftime("%Y-%m-%d %p %I:%M:%S").replace("AM", "上午").replace("PM", "下午")
+
             process_response(response, container)
 
         except requests.exceptions.RequestException as e:
             print(f"\nRequest to C{container} failed: {e}")
+            process_response(response, container)
         container += 1
 
     # Re-define container number shown
