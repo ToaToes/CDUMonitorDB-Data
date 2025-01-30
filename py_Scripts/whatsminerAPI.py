@@ -1,3 +1,8 @@
+###
+### Author: Tom Chen
+###
+# Using the whatsminer API to check if the miners hashing down
+
 from whatsminer import WhatsminerAccessToken, WhatsminerAPI
 import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
