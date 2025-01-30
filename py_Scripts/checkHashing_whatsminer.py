@@ -80,18 +80,8 @@ def run_task():
         except Exception:
             pass  # Silently handle any errors during message sending
 
-# Function to clean up unused memory
-def cleanup():
-    cleanup_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Get current time
-    print(f"Performing cleanup at {cleanup_time}...")
-    gc.collect()  # Run garbage collection to free memory
-    print(f"Cleanup completed at {cleanup_time}.")
-
 # Schedule the main task to run every minute
 schedule.every(8).minutes.do(run_task)
-
-# Schedule the cleanup task to run every 10 minutes
-schedule.every(1).hour.do(cleanup)
 
 # Keep the script running
 while True:
