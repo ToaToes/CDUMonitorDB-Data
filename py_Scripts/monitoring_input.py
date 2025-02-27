@@ -1,3 +1,6 @@
+### Input for the Oracle system for data input for the monitoring system
+### Author: Tom
+
 import pandas as pd # Import pandas for Excel support
 import os
 
